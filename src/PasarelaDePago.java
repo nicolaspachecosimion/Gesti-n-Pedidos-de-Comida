@@ -69,4 +69,50 @@ public class PasarelaDePago {
         this.procesarPagoCorrecto();
         return true;
     }
+    public boolean Efectivo(float cantidadEntrega) {
+        // 1. Validar que nos dan dinero suficiente
+        if (cantidadEntrega < this.importe) {
+            System.out.println("ERROR: La cantidad entregada (" + cantidadEntrega + "€) es menor que el importe (" + this.importe + "€).");
+            return false; // El pago falla
+        }
+
+        // 2. Calcular el cambio a devolver
+        double cambio = cantidadEntrega - this.importe;
+        // Redondeamos el cambio a dos decimales para evitar problemas de precisión matemática
+        cambio = Math.round(cambio * 100.0) / 100.0;
+
+        System.out.println("\n SU CAMBIO ");
+        System.out.println("******************");
+
+        // 3. Desglose de billetes y monedas
+        int billetes50 = (int) (cambio / 50);
+        cambio = cambio % 50; // Nos quedamos con el resto
+
+        int billetes20 = (int) (cambio / 20);
+        cambio = cambio % 20;
+
+        int billetes10 = (int) (cambio / 10);
+        cambio = cambio % 10;
+
+        int billetes5  = (int) (cambio / 5);
+        cambio = cambio % 5;
+
+        int monedas1   = (int) (cambio / 1);
+        cambio = cambio % 1;
+
+        // Lo que queda después de las monedas de 1€ son los céntimos
+        double centimos = Math.round(cambio * 100.0) / 100.0;
+
+        // Mostramos el resultado
+        System.out.println(" 50€       " + billetes50 + " billete(s)");
+        System.out.println(" 20€       " + billetes20 + " billete(s)");
+        System.out.println(" 10€       " + billetes10 + " billete(s)");
+        System.out.println(" 5€        " + billetes5 + " billete(s)");
+        System.out.println(" 1€        " + monedas1 + " euro(s)");
+        System.out.println(" cent      " + centimos + " céntimo(s)");
+
+        // 4. Si llegamos aquí, el pago ha sido exitoso, llamamos a nuestra función privada
+        this.procesarPagoCorrecto();
+        return true;
+    }
 }
