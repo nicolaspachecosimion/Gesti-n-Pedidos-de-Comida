@@ -53,4 +53,49 @@ public class Pedido {
             this.estado = nuevoEstado;
         }
     }
+    // --- MÉTODOS ---
+
+    public void agregarProducto(Producto producto) {
+        // Solo podemos agregar si el pedido no está pagado osea está en PENDIENTE
+        if (this.estado != ESTADO_PENDIENTE) {
+            System.out.println("ERROR: No se pueden añadir productos. El pedido ya está pagado o en proceso.");
+            return;
+        }
+
+        if (producto != null) {
+            this.productos.add(producto);
+            this.actualizarImporteTotal();
+        } else {
+            System.out.println("ERROR: El producto a añadir es nulo.");
+        }
+    }
+
+    public void eliminarProducto(int posicion) {
+        // Solo podemos eliminar si el pedido no está pagado
+        if (this.estado != ESTADO_PENDIENTE) {
+            System.out.println("ERROR: No se pueden eliminar productos de un pedido que ya está pagado.");
+            return;
+        }
+
+        // Comprobamos que la posición exista dentro del ArrayList para que el programa no pete
+        if (posicion >= 0 && posicion < this.productos.size()) {
+            this.productos.remove(posicion);
+            this.actualizarImporteTotal();
+        } else {
+            System.out.println("ERROR: Posición no válida. No hay producto en la posición " + posicion);
+        }
+    }
+
+    // --- MÉT ODO PRIVADO ---
+    // Recalcula el precio total recorriendo el array de productos
+    private void actualizarImporteTotal() {
+        double suma = 0.0;
+
+        for (int i = 0; i < this.productos.size(); i++) {
+            Producto p = this.productos.get(i);
+            suma = suma + p.getPrecio();
+        }
+        // Redondeamos a 2 decimales
+        this.importeTotal = Math.round(suma * 100.0) / 100.0;
+    }
 }
