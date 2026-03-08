@@ -98,4 +98,85 @@ public class Pedido {
         // Redondeamos a 2 decimales
         this.importeTotal = Math.round(suma * 100.0) / 100.0;
     }
+
+    // --- MÉTODOS: PAGO Y TICKET ---
+
+    // Le pasamos el tipo de pago, nuestras constantes, un texto para tarjeta o cuenta y una cantidad para efectivo
+    public boolean pagar(int tipoPago, String datoExtra, float cantidad) {
+        // 1. Comprobamos que el pedido esté PENDIENTE
+        if (this.estado != ESTADO_PENDIENTE) {
+            System.out.println("ERROR: Este pedido ya ha sido pagado o está en proceso.");
+            return false;
+        }
+
+        // 2. Comprobamos que no esté vacío
+        if (this.productos.size() == 0) {
+            System.out.println("ERROR: El pedido está vacío, no hay nada que cobrar.");
+            return false;
+        }
+
+        // 3. Creamos la pasarela de pago con el importe total del pedido
+        this.pago = new PasarelaDePago(this.importeTotal);
+        boolean pagoCorrecto = false;
+
+        // 4. Según el tipo de pago elegido, llamamos a un mét odo u otro
+        if (tipoPago == PAGO_EFECTIVO) {
+            pagoCorrecto = this.pago.Efectivo(cantidad);
+        } else if (tipoPago == PAGO_TARJETA) {
+            pagoCorrecto = this.pago.Tarjeta(datoExtra);
+        } else if (tipoPago == PAGO_CUENTA) {
+            pagoCorrecto = this.pago.Cuenta(datoExtra);
+        } else {
+            System.out.println("ERROR: Tipo de pago seleccionado no existe.");
+            return false;
+        }
+
+        // 5. Si la pasarela nos devuelve true, el pago se ha realizado con éxito
+        if (pagoCorrecto == true) {
+            this.estado = ESTADO_PAGADO;
+            this.fechaHora = new Date();
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public String toString() {
+        String ticket = "CANT.\t\tPRODUCTO\t\tPRECIO UD.\tTOTAL\n";
+        ticket = ticket + "=====\t\t=========\t\t=========\t=====\n";
+
+        // Creamos dos listas auxiliares para agrupar
+        ArrayList<Producto> unicos = new ArrayList<Producto>();
+        ArrayList<Integer> cantidades = new ArrayList<Integer>();
+
+        // Recorremos todos los productos del pedido
+        for (int i = 0; i < this.productos.size(); i++) {
+            Producto pActual = this.productos.get(i);
+
+            int posicion = unicos.indexOf(pActual);
+
+            if (posicion == -1) {
+                unicos.add(pActual);
+                cantidades.add(1);
+            } else {
+                int cantActual = cantidades.get(posicion);
+                cantidades.set(posicion, cantActual + 1);
+            }
+        }
+
+        // Ahora recorremos nuestra lista de productos agrupados para montar las líneas del ticket
+        for (int i = 0; i < unicos.size(); i++) {
+            Producto p = unicos.get(i);
+            int cant = cantidades.get(i);
+
+            // Calculamos el total de esa línea
+            double totalLinea = Math.round((p.getPrecio() * cant) * 100.0) / 100.0;
+
+            ticket = ticket + cant + "\t\t" + p.getNombre() + "\t\t" + p.getPrecio() + " €\t\t" + totalLinea + " €\n";
+        }
+
+        ticket = ticket + "TOTAL --------------------------------------------> " + this.importeTotal + " €\n";
+
+        return ticket;
+    }
 }
