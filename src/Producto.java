@@ -1,4 +1,4 @@
-public class Producto {
+public class Producto implements Comparable<Producto> {
 
     // 1. Atributos
     private String nombre;
@@ -39,5 +39,24 @@ public class Producto {
         } else {
             this.precio = Math.round(precio * 100.0) / 100.0;
         }
+    }
+
+    // --- MÉTODOS PARA ORDENAR Y COMPARAR ---
+
+    // Ordenarlos alfabéticamente por el nombre
+    public int compareTo(Producto otro) {
+        return this.nombre.compareTo(otro.getNombre());
+    }
+
+    // Saber si dos productos son el mismo por su nombre
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null || this.getClass() != obj.getClass()) {
+            return false;
+        }
+        Producto otro = (Producto) obj;
+        return this.nombre.equals(otro.getNombre());
     }
 }
