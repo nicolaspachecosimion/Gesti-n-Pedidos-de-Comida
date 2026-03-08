@@ -95,7 +95,6 @@ public class Pedido {
             Producto p = this.productos.get(i);
             suma = suma + p.getPrecio();
         }
-        // Redondeamos a 2 decimales
         this.importeTotal = Math.round(suma * 100.0) / 100.0;
     }
 
@@ -131,7 +130,7 @@ public class Pedido {
             return false;
         }
 
-        // 5. Si la pasarela nos devuelve true, el pago se ha realizado con éxito
+        // Si la pasarela nos devuelve true, el pago se ha realizado con éxito
         if (pagoCorrecto == true) {
             this.estado = ESTADO_PAGADO;
             this.fechaHora = new Date();

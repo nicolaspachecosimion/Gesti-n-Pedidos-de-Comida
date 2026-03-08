@@ -12,7 +12,6 @@ public class Producto implements Comparable<Producto> {
 
     // 3. Metodos get y set
 
-    // Devuelve el nombre
     public String getNombre() {
         return nombre;
     }
@@ -26,7 +25,6 @@ public class Producto implements Comparable<Producto> {
         }
     }
 
-    // Devuelve el precio
     public double getPrecio() {
         return precio;
     }

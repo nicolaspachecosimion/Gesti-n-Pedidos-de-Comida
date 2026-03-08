@@ -111,7 +111,6 @@ public class PasarelaDePago {
         System.out.println(" 1€        " + monedas1 + " euro(s)");
         System.out.println(" cent      " + centimos + " céntimo(s)");
 
-        // 4. Si llegamos aquí, el pago ha sido exitoso, llamamos a nuestra función privada
         this.procesarPagoCorrecto();
         return true;
     }

@@ -55,18 +55,18 @@ public class Cliente {
 
         boolean esValido = true;
 
-        // Comprobación A: ¿Tiene exactamente 9 caracteres?
+        // Comprobación si tiene exactamente 9 caracteres
         if (telLimpio.length() != 9) {
             esValido = false;
         }
         else {
-            // Comprobación B: ¿El primer número es 6, 7, 8 o 9?
+            // Comprobación si el primer número es 6, 7, 8 o 9
             char primerDigito = telLimpio.charAt(0);
             if (primerDigito != '6' && primerDigito != '7' && primerDigito != '8' && primerDigito != '9') {
                 esValido = false;
             }
             else {
-                // Comprobación C: ¿Todos los caracteres son números?
+                // Comprobación si todos los caracteres son números
                 for (int i = 0; i < telLimpio.length(); i++) {
                     char letra = telLimpio.charAt(i);
                     // Comprobamos si el carácter no está entre el 0 y el 9
