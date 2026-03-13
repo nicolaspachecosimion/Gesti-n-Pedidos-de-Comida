@@ -1,11 +1,17 @@
 import java.util.Date;
-
+/**
+ * Gestiona el cobro de un pedido mediante diferentes métodos de pago.
+ */
 public class PasarelaDePago {
 
     // 1. Atributos
     private double importe;
     private long codigoPago;
 
+    /**
+     * Constructor de la pasarela de pago.
+     * @param importe Cantidad total a cobrar.
+     */
     // 2. Constructor
     public PasarelaDePago(double importe) {
         this.setImporte(importe);
@@ -31,6 +37,10 @@ public class PasarelaDePago {
         return codigoPago;
     }
 
+    /**
+     * Comprueba si el pago ya se ha realizado con éxito.
+     * @return true si está pagado, false si está pendiente.
+     */
     // Para saber si ya se ha pagado
     public boolean esPagado() {
         if (this.codigoPago == 0) {
@@ -49,6 +59,11 @@ public class PasarelaDePago {
 
     // --- MÉTODOS DE PAGO: TARJETA Y CUENTA ---
 
+    /**
+     * Procesa un pago mediante tarjeta bancaria.
+     * @param numeroTarjeta El número de la tarjeta.
+     * @return true si el pago se realiza con éxito, false en caso contrario.
+     */
     public boolean Tarjeta(String numeroTarjeta) {
         if (numeroTarjeta == null || numeroTarjeta.trim().equals("")) {
             System.out.println("ERROR: El número de tarjeta no es válido.");
@@ -60,6 +75,11 @@ public class PasarelaDePago {
         return true;
     }
 
+    /**
+     * Procesa un pago cargándolo en una cuenta bancaria.
+     * @param cuenta El número de cuenta.
+     * @return true si el pago se realiza con éxito.
+     */
     public boolean Cuenta(String cuenta) {
         if (cuenta == null || cuenta.trim().equals("")) {
             System.out.println("ERROR: El número de cuenta no es válido.");
@@ -69,6 +89,11 @@ public class PasarelaDePago {
         this.procesarPagoCorrecto();
         return true;
     }
+    /**
+     * Procesa un pago en efectivo, validando la cantidad y calculando el cambio.
+     * @param cantidadEntrega La cantidad de dinero entregada por el cliente.
+     * @return true si el dinero es suficiente y el pago se completa.
+     */
     public boolean Efectivo(float cantidadEntrega) {
         // 1. Validar que nos dan dinero suficiente
         if (cantidadEntrega < this.importe) {

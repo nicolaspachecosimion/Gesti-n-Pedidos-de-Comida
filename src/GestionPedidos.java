@@ -10,6 +10,10 @@ public class GestionPedidos {
     private ArrayList<Producto> cartaProductos;
     private Scanner sc;
 
+    /**
+     * Constructor que inicializa las estructuras de datos y carga los clientes
+     * y productos de prueba.
+     */
     // --- CONSTRUCTOR ---
     public GestionPedidos() {
         this.clientes = new HashMap<String, Cliente>();
@@ -31,7 +35,7 @@ public class GestionPedidos {
         // Ordenamos la lista alfabéticamente
         Collections.sort(this.cartaProductos);
 
-        // Creamos un cliente de prueba
+        // Creamos un cliente
         Cliente c1 = new Cliente("Juan", "Perez", "776245688", "Calle 123");
 
         // Lo metemos en el HashMap. La clave es su teléfono
@@ -39,6 +43,10 @@ public class GestionPedidos {
     }
 
     // --- BUCLE PRINCIPAL ---
+    /**
+     * Inicia el bucle principal de la aplicación por consola,
+     * pidiendo el teléfono del cliente para buscarlo en el sistema.
+     */
     public void iniciar() {
         boolean salir = false;
 
@@ -67,6 +75,11 @@ public class GestionPedidos {
         }
     }
 
+    /**
+     * Añadir productos al carrito mediante teclado.
+     *
+     * @param cliente El cliente que está realizando la compra.
+     */
     // --- CREAR PEDIDO Y SELECCIONAR PRODUCTOS ---
     private void crearPedido(Cliente cliente) {
         // Iniciamos un pedido asignado a este cliente

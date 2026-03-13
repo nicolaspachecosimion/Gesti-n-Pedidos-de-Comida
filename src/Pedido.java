@@ -1,6 +1,9 @@
 import java.util.Date;
 import java.util.ArrayList;
-
+/**
+ * Representa un pedido realizado por un cliente en el restaurante.
+ * Contiene la lista de productos, gestiona el estado del pedido y procesa el pago.
+ */
 public class Pedido {
 
     // --- CONSTANTES DE ESTADO ---
@@ -23,6 +26,11 @@ public class Pedido {
     private PasarelaDePago pago;
     private int estado;
 
+    /**
+     * Constructor que inicia un pedido vacío y en estado PENDIENTE.
+     *
+     * @param cliente El cliente dueño del pedido.
+     */
     // --- CONSTRUCTOR ---
     public Pedido(Cliente cliente) {
         this.cliente = cliente;
@@ -33,19 +41,48 @@ public class Pedido {
 
     // --- MÉTODOS GET Y SET ---
 
+    /**
+     * Obtiene el cliente asociado a este pedido.
+     * @return El objeto Cliente dueño del pedido.
+     */
     public Cliente getCliente() { return cliente; }
 
+    /**
+     * Obtiene la fecha y hora en la que se realizó
+     * @return Objeto Date con la marca de tiempo.
+     */
     public Date getFechaHora() { return fechaHora; }
 
+    /**
+     * Obtiene la lista de productos añadidos al carrito.
+     * @return ArrayList con los productos actuales.
+     */
     public ArrayList<Producto> getProductos() { return productos; }
 
+    /**
+     * Obtiene el importe total acumulado del pedido.
+     * @return El total en euros (con dos decimales).
+     */
     public double getImporteTotal() { return importeTotal; }
 
+    /**
+     * Obtiene el objeto pasarela de pago asociado a este pedido tras cobrarlo.
+     * @return Objeto PasarelaDePago con los datos del cobro.
+     */
     public PasarelaDePago getPago() { return pago; }
 
+    /**
+     * Obtiene el estado de preparación actual del pedido.
+     * @return Entero que representa una constante de estado.
+     */
     public int getEstado() { return estado; }
 
-    // No se puede empezar a preparar un pedido si no está pagado
+    /**
+     * Modifica el estado del pedido con una validación de seguridad:
+     * no se puede avanzar el estado si todavía está PENDIENTE de pago.
+     *
+     * @param nuevoEstado El estado al que se desea transicionar.
+     */
     public void setEstado(int nuevoEstado) {
         if (this.estado == ESTADO_PENDIENTE && nuevoEstado != ESTADO_PAGADO) {
             System.out.println("ERROR: No se puede avanzar el estado. El pedido aún no está pagado.");
@@ -53,8 +90,15 @@ public class Pedido {
             this.estado = nuevoEstado;
         }
     }
+
     // --- MÉTODOS ---
 
+    /**
+     * Añade un producto a la lista del carrito, siempre y cuando
+     * el pedido se encuentre aún en estado PENDIENTE. Actualiza el total.
+     *
+     * @param producto El producto a añadir.
+     */
     public void agregarProducto(Producto producto) {
         // Solo podemos agregar si el pedido no está pagado osea está en PENDIENTE
         if (this.estado != ESTADO_PENDIENTE) {
@@ -70,6 +114,12 @@ public class Pedido {
         }
     }
 
+    /**
+     * Elimina un producto de la lista indicando su índice, siempre y cuando
+     * el pedido siga en estado PENDIENTE.
+     *
+     * @param posicion Índice del elemento en el ArrayList a eliminar.
+     */
     public void eliminarProducto(int posicion) {
         // Solo podemos eliminar si el pedido no está pagado
         if (this.estado != ESTADO_PENDIENTE) {
@@ -87,7 +137,10 @@ public class Pedido {
     }
 
     // --- MÉT ODO PRIVADO ---
-    // Recalcula el precio total recorriendo el array de productos
+    /**
+     * Recalcula el precio total sumando los importes de todos
+     * los productos almacenados en el ArrayList y redondeando a dos decimales.
+     */
     private void actualizarImporteTotal() {
         double suma = 0.0;
 
@@ -100,7 +153,15 @@ public class Pedido {
 
     // --- MÉTODOS: PAGO Y TICKET ---
 
-    // Le pasamos el tipo de pago, nuestras constantes, un texto para tarjeta o cuenta y una cantidad para efectivo
+    /**
+     * Intenta cobrar el pedido instanciando la Pasarela de Pago correspondiente.
+     * Comprueba que el pedido no esté vacío y no se haya pagado ya.
+     *
+     * @param tipoPago Constante que define el método (1: EFECTIVO, 2: TARJETA, 3: CUENTA).
+     * @param datoExtra Número de tarjeta o cuenta (si aplica el método, si no pasar vacío).
+     * @param cantidad Cantidad de dinero entregado por el cliente (solo para efectivo).
+     * @return true si el pago se ha procesado con éxito, false en caso contrario.
+     */
     public boolean pagar(int tipoPago, String datoExtra, float cantidad) {
         // 1. Comprobamos que el pedido esté PENDIENTE
         if (this.estado != ESTADO_PENDIENTE) {
@@ -139,7 +200,12 @@ public class Pedido {
             return false;
         }
     }
-
+    /**
+     * Genera un ticket en formato texto agrupando los productos iguales,
+     * contando su cantidad y sumando el total por línea y por pedido.
+     *
+     * @return String formateado con el diseño visual del ticket de compra.
+     */
     public String toString() {
         String ticket = "CANT.\t\tPRODUCTO\t\tPRECIO UD.\tTOTAL\n";
         ticket = ticket + "=====\t\t=========\t\t=========\t=====\n";

@@ -11,6 +11,14 @@ public class Cliente {
     private String direccion;
     private ArrayList<Pedido> historial;
 
+    /**
+     * Constructor que inicializa un cliente y crea su historial vacío.
+     *
+     * @param nombre Nombre del cliente.
+     * @param apellidos Apellidos del cliente.
+     * @param telefono Teléfono de contacto (se validará que tenga 9 cifras).
+     * @param direccion Dirección postal.
+     */
     // 2. CONSTRUCTOR
     public Cliente(String nombre, String apellidos, String telefono, String direccion) {
         this.setNombre(nombre);
@@ -24,7 +32,10 @@ public class Cliente {
     // 3. MÉTODOS GET Y SET
 
     public String getNombre() { return nombre; }
-
+    /**
+     * Establece el nombre del cliente, limpiando espacios y convirtiéndolo a minúsculas.
+     * @param nombre El nombre a guardar.
+     */
     public void setNombre(String nombre) {
         if (nombre != null) {
             this.nombre = nombre.trim().toLowerCase();
@@ -44,7 +55,13 @@ public class Cliente {
     }
 
     public String getTelefono() { return telefono; }
-
+    /**
+     * Establece el teléfono
+     * Debe tener exactamente 9 caracteres numéricos y empezar por 6, 7, 8 o 9.
+     * Si no es válido, se asigna "000000000".
+     *
+     * @param telefono String con el teléfono proporcionado.
+     */
     public void setTelefono(String telefono) {
         if (telefono == null) {
             this.telefono = "000000000";
@@ -93,7 +110,11 @@ public class Cliente {
     }
 
     public Date getFechaDeAlta() { return fechaDeAlta; }
-
+    /**
+     * Establece manualmente la fecha de alta del cliente.
+     * Si recibe un nulo, asigna la fecha y hora actual del sistema.
+     * @param fechaDeAlta Objeto Date a establecer.
+     */
     public void setFechaDeAlta(Date fechaDeAlta) {
         if (fechaDeAlta != null) {
             this.fechaDeAlta = fechaDeAlta;
@@ -103,11 +124,19 @@ public class Cliente {
     }
 
     // --- GESTIÓN DEL HISTORIAL ---
-
+    /**
+     * Obtiene la lista con el historial de pedidos completados del cliente.
+     * @return ArrayList de objetos Pedido.
+     */
     public ArrayList<Pedido> getHistorial() {
         return historial;
     }
-
+    /**
+     * Agrega un pedido al historial del cliente validando primero que:
+     * no sea nulo, pertenezca a este cliente, esté pagado y no esté repetido (misma fecha y hora).
+     *
+     * @param pedido El pedido a almacenar.
+     */
     public void agregarPedido(Pedido pedido) {
         if (pedido == null) {
             System.out.println("ERROR: El pedido a añadir es nulo.");
