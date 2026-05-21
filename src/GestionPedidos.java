@@ -2,6 +2,11 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Scanner;
+import java.io.FileOutputStream;
+import java.io.ObjectOutputStream;
+import java.io.FileInputStream;
+import java.io.ObjectInputStream;
+import java.io.IOException;
 
 public class GestionPedidos {
 
@@ -200,6 +205,44 @@ public class GestionPedidos {
             cliente.agregarPedido(pedido); // ¡Lo añadimos a su historial!
         } else {
             System.out.println("La operación de pago no se pudo completar.");
+        }
+    }
+    /**
+     * Guarda el HashMap de clientes y la lista de productos en un archivo binario.
+     * Usa la serialización de objetos de Java para almacenar los datos en el disco duro.
+     *
+     * @param nombreFichero El nombre o ruta del archivo donde se guardará la partida.
+     */
+    public void guardarDatos(String nombreFichero) {
+        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(nombreFichero))) {
+            // Guardamos primero el mapa de clientes (que arrastra su historial de pedidos)
+            oos.writeObject(this.clientes);
+            // Guardamos después la carta de productos de la aplicación
+            oos.writeObject(this.cartaProductos);
+
+            System.out.println("Datos guardados correctamente en el fichero: " + nombreFichero);
+        } catch (IOException e) {
+            System.out.println("ERROR al guardar los datos en el archivo: " + e.getMessage());
+        }
+    }
+    /**
+     * Recupera el HashMap de clientes y la lista de productos desde un archivo binario.
+     * Reconstruye los objetos en la memoria RAM mediante deserialización.
+     *
+     * @param nombreFichero El nombre del archivo desde donde se cargarán los datos.
+     * @return true si los datos se cargaron con éxito, false si el archivo no existía o falló.
+     */
+    public boolean recuperarDatos(String nombreFichero) {
+        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(nombreFichero))) {
+            // Leemos los objetos en el mismo orden en el que los guardamos
+            this.clientes = (HashMap<String, Cliente>) ois.readObject();
+            this.cartaProductos = (ArrayList<Producto>) ois.readObject();
+
+            System.out.println("Datos recuperados desde el fichero: " + nombreFichero);
+            return true;
+        } catch (IOException | ClassNotFoundException e) {
+            System.out.println("No se pudieron cargar los datos (" + e.getMessage() + ").");
+            return false;
         }
     }
 }
