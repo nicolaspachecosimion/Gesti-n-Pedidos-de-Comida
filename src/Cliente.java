@@ -1,7 +1,8 @@
 import java.util.Date;
 import java.util.ArrayList;
+import java.io.Serializable;
 
-public class Cliente {
+public class Cliente implements Serializable {
 
     // 1. ATRIBUTOS
     private String nombre;

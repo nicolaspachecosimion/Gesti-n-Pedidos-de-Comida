@@ -1,10 +1,11 @@
 import java.util.Date;
 import java.util.ArrayList;
+import java.io.Serializable;
 /**
  * Representa un pedido realizado por un cliente en el restaurante.
  * Contiene la lista de productos, gestiona el estado del pedido y procesa el pago.
  */
-public class Pedido {
+public class Pedido implements Serializable {
 
     // --- CONSTANTES DE ESTADO ---
     public static final int ESTADO_PENDIENTE = 0; // Estado inicial antes de pagar

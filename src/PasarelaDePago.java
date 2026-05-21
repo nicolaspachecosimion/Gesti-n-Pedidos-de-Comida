@@ -1,8 +1,9 @@
 import java.util.Date;
+import java.io.Serializable;
 /**
  * Gestiona el cobro de un pedido mediante diferentes métodos de pago.
  */
-public class PasarelaDePago {
+public class PasarelaDePago implements Serializable {
 
     // 1. Atributos
     private double importe;

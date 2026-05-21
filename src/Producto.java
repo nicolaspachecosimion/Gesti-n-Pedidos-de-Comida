@@ -1,7 +1,8 @@
+import java.io.Serializable;
 /**
  * Representa un producto de la carta
  */
-public class Producto implements Comparable<Producto> {
+public class Producto implements Comparable<Producto>, Serializable {
 
     // 1. Atributos
     private String nombre;
