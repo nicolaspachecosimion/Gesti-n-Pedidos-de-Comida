@@ -53,6 +53,20 @@ public class GestionPedidos {
      * pidiendo el teléfono del cliente para buscarlo en el sistema.
      */
     public void iniciar() {
+
+        System.out.println("=========================================");
+        System.out.println("   SISTEMA DE GESTIÓN DE PEDIDOS");
+        System.out.println("=========================================");
+        System.out.print("¿Deseas cargar los datos de una sesión anterior? (S/N): ");
+        String respCarga = this.sc.nextLine();
+
+        if (respCarga.equalsIgnoreCase("S")) {
+            System.out.print("Introduce el nombre del fichero: ");
+            String ficheroCargar = this.sc.nextLine();
+            this.recuperarDatos(ficheroCargar);
+        }
+        System.out.println("Iniciando el sistema...\n");
+
         boolean salir = false;
 
         // Bucle que se repite hasta que el usuario escriba 0
@@ -64,18 +78,19 @@ public class GestionPedidos {
             String tlfLimpio = tlfInput.replace(" ", "");
 
             if (tlfLimpio.equals("0")) {
-                System.out.println("GRACIAS POR USAR NUESTRO SOFTWARE!.");
-                salir = true;
-            } else {
-                // Buscamos el cliente en nuestro HashMap usando el teléfono limpio
-                // El mét odo .get() devuelve el Cliente si lo encuentra, o null si no existe
-                Cliente clienteActual = this.clientes.get(tlfLimpio);
+                // Pega aquí la lógica para preguntar si desea guardar antes de salir
+                System.out.println("\n--- CERRANDO SESIÓN ---");
+                System.out.print("¿Deseas guardar todos los datos actuales en un fichero? (S/N): ");
+                String respGuardar = this.sc.nextLine();
 
-                if (clienteActual == null) {
-                    System.out.println("ERROR: El cliente no existe!");
-                } else {
-                    this.crearPedido(clienteActual);
+                if (respGuardar.equalsIgnoreCase("S")) {
+                    System.out.print("Introduce el nombre del fichero para guardar (ejemplo: datos.dat): ");
+                    String ficheroGuardar = this.sc.nextLine();
+                    this.guardarDatos(ficheroGuardar);
                 }
+
+                System.out.println("GRACIAS POR USAR NUESTRO SOFTWARE!.");
+                salir = true; // Aquí ya cambia a true y el bucle while terminará
             }
         }
     }
