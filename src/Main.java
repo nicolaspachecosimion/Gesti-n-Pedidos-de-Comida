@@ -10,8 +10,8 @@ public class Main {
      * @param args
      */
     public static void main(String[] args) {
-        // Instanciamos nuestra clase gestora y arrancamos el programa
         GestionPedidos app = new GestionPedidos();
-        app.iniciar();
+        // Arrancamos la ventana gráfica
+        MenuGrafico.iniciarVentana(app);
     }
 }

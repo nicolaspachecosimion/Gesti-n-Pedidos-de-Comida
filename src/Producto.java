@@ -79,18 +79,18 @@ public class Producto implements Comparable<Producto>, Serializable {
 
     /**
      * Comprueba si dos productos son iguales basándose en su nombre.
-     * @param obj El objeto a comparar.
+     * @param objeto El objeto a comparar.
      * @return true si tienen el mismo nombre, false en caso contrario.
      */
     // Saber si dos productos son el mismo por su nombre
-    public boolean equals(Object obj) {
-        if (this == obj) {
+    public boolean equals(Object objeto) {
+        if (this == objeto) {
             return true;
         }
-        if (obj == null || this.getClass() != obj.getClass()) {
+        if (objeto == null || this.getClass() != objeto.getClass()) {
             return false;
         }
-        Producto otro = (Producto) obj;
+        Producto otro = (Producto) objeto;
         return this.nombre.equals(otro.getNombre());
     }
 }

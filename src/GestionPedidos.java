@@ -74,11 +74,11 @@ public class GestionPedidos {
             System.out.print("\nINTRODUZCA TELÉFONO (0 SALIR) :");
             String tlfInput = this.sc.nextLine();
 
-            // Limpiamos los espacios"
+            // Limpiamos los espacios
             String tlfLimpio = tlfInput.replace(" ", "");
 
             if (tlfLimpio.equals("0")) {
-                // Pega aquí la lógica para preguntar si desea guardar antes de salir
+                // Preguntar si desea guardar antes de salir
                 System.out.println("\n--- CERRANDO SESIÓN ---");
                 System.out.print("¿Deseas guardar todos los datos actuales en un fichero? (S/N): ");
                 String respGuardar = this.sc.nextLine();
@@ -162,7 +162,7 @@ public class GestionPedidos {
     }
 
     // --- EL PAGO DEL PEDIDO ---
-    private void procesarPago(Pedido pedido, Cliente cliente) {
+    public void procesarPago(Pedido pedido, Cliente cliente) {
         if (pedido.getImporteTotal() == 0.0) {
             System.out.println("El pedido está vacío. No hay nada que cobrar.");
             return;
@@ -179,7 +179,7 @@ public class GestionPedidos {
 
         if (metodoStr.equals("1")) {
             System.out.print("Introduce la cantidad a entregar (ej: 123.45): ");
-            // Cambiamos comas por puntos por si el usuario lo escribe con coma
+            // Cambiamos comas por puntos para que valgan las dos opciones
             String cantStr = this.sc.nextLine().replace(",", ".");
 
             // Validacion de decimales
@@ -248,16 +248,45 @@ public class GestionPedidos {
      * @return true si los datos se cargaron con éxito, false si el archivo no existía o falló.
      */
     public boolean recuperarDatos(String nombreFichero) {
-        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(nombreFichero))) {
-            // Leemos los objetos en el mismo orden en el que los guardamos
-            this.clientes = (HashMap<String, Cliente>) ois.readObject();
-            this.cartaProductos = (ArrayList<Producto>) ois.readObject();
+        try (ObjectInputStream ois = new ObjectInputStream(new java.io.FileInputStream(nombreFichero))) {
 
-            System.out.println("Datos recuperados desde el fichero: " + nombreFichero);
+            // Leemos los datos del archivo y los guardamos en variables temporales
+            HashMap<String, Cliente> clientesCargados = (HashMap<String, Cliente>) ois.readObject();
+            ArrayList<Producto> productosCargados = (ArrayList<Producto>) ois.readObject();
+
+            // Usamos putAll para sumarlos a los actuales
+            this.clientes.putAll(clientesCargados);
+
+            System.out.println("Datos recuperados y fusionados con éxito desde el fichero: " + nombreFichero);
             return true;
-        } catch (IOException | ClassNotFoundException e) {
-            System.out.println("No se pudieron cargar los datos (" + e.getMessage() + ").");
+        } catch (Exception e) {
+            System.out.println("AVISO: No se pudieron cargar los datos previos (" + e.getMessage() + ").");
             return false;
         }
     }
+
+    /**
+     * Busca un cliente en el sistema por su número de teléfono.
+     * @param telefono El teléfono introducido en el formulario.
+     * @return El objeto Cliente si existe, o null si no se encuentra.
+     */
+    public Cliente buscarCliente(String telefono) {
+        String tlfLimpio = telefono.replace(" ", "");
+        return this.clientes.get(tlfLimpio);
+    }
+
+    /**
+     * Permite a la interfaz gráfica lanzar el menú de pedido en consola
+     * para un cliente concreto que ya ha sido localizado.
+     * @param cliente El cliente al que se va a atender.
+     */
+    public void lanzarPedidoConsola(Cliente cliente) {
+        this.crearPedido(cliente);
+    }
+
+    public ArrayList<Producto> getCartaProductos() {
+        return this.cartaProductos;
+    }
+
+
 }
