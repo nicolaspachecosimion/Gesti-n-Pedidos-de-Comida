@@ -45,7 +45,7 @@ public class MenuGrafico {
             @Override
             public void actionPerformed(ActionEvent e) {
                 JFileChooser fc = new JFileChooser(".");
-                int opcion = fc.showOpenDialog(ventana); // Abre la ventana de Windows
+                int opcion = fc.showOpenDialog(ventana);
 
                 if (opcion == JFileChooser.APPROVE_OPTION) {
                     File archivo = fc.getSelectedFile(); // Cogemos el archivo que el usuario ha clickado
@@ -80,7 +80,7 @@ public class MenuGrafico {
             }
         });
 
-        // --- EL FORMULARIO DE BUSQUEDA DE CLIENTE ---
+        // EL FORMULARIO DE BUSQUEDA DE CLIENTE
         btnAtender.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -159,10 +159,10 @@ public class MenuGrafico {
         ventanaPedido.setSize(500, 450);
         ventanaPedido.setLayout(new BorderLayout(10, 10));
 
-        // 1. Iniciamos el pedido real en la memoria
+        // Iniciamos el pedido real en la memoria
         Pedido nuevoPedido = cliente.realizarPedido();
 
-        // 2. El Ticket Central (JTextArea)
+        // El Ticket
         JTextArea areaTicket = new JTextArea();
         areaTicket.setFont(new Font("Monospaced", Font.PLAIN, 14)); // Fuente tipo máquina de escribir
         areaTicket.setEditable(false); // Para que el usuario no escriba encima
@@ -172,7 +172,7 @@ public class MenuGrafico {
         JScrollPane scrollTicket = new JScrollPane(areaTicket);
         ventanaPedido.add(scrollTicket, BorderLayout.CENTER);
 
-        // 3. Panel Inferior (Desplegable y Botones)
+        // Panel Inferior
         JPanel panelAbajo = new JPanel();
 
         // Creamos el menú desplegable y lo rellenamos con la carta del gestor
